@@ -6,7 +6,9 @@
 # архивации дополнительно проверялось создание файла
 # архива, а при распаковке проверялось создание файлов.
 
-from sem import checkout
+import subprocess
+
+from seminar_2 import checkout
 
 folderin = "/home/user/tst"
 folderout = "/home/user/out"
@@ -53,3 +55,13 @@ def test_step7():
 def test_step8():
     #test8
     assert checkout(f"cd {folderout}; 7z l arx2.7z", "2 files")
+
+def test_step9():
+    # test9
+    assert checkout(f"cd {folderout}; 7z x arx2.7z -o{folderext} -y", "Everything is Ok"), "test9 FAIL"
+
+def test_step10():
+    # test10
+    res = subprocess.run("crc32 /home/user/out/arx2.7z", shell=True, stdout=subprocess.PIPE, encoding='utf-8')
+    out = (res.stdout).rstrip().upper()
+    assert checkout(f"cd {folderout}; 7z h arx2.7z", out), "test10 FAIL"
